@@ -26,6 +26,7 @@ Packets that break this rule:
 ### Incoming:
 <ul>
 <li><a href="#inc1">1: Update Pings</a></li>
+<li><a href="#inc2">2: Room created</a></li>
 <li><a href="#inc3">3: Room join</a></li>
 <li><a href="#inc4">4: Player join</a></li>
 <li><a href="#inc5">5: Player leave</a></li>
@@ -110,6 +111,17 @@ _____
     <ol type=1>
       <li>An object with the other user's ping times.</li>
       <li>An number to determine which ping a client is responding to. The client should echo <code>42[1,{"id":<this number>}]</code> when this packet is recieved.</li>
+    </ol>
+  </p></li>
+  <li id="inc2"><p>
+    2: Room created
+    <br>This packed is used to inform that the room was created.
+    <br>Example: <code>42[2,"1gozW6_jPwAdO_mJARyd",1,null]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Not used in the game's code</li>
+      <li>ID probably? always 1</li>
+      <li>null if custom room or map array with the format [{id: 0, s: encoded_map_data, v: map_version}, {id: 1...}]</li>
     </ol>
   </p></li>
   <li id="inc3"><p>

@@ -47,17 +47,29 @@ Packets that break this rule:
 <li><a href="#inc20">20: Chat Message</a></li>
 <li><a href="#inc21">21: Initial data</a></li>
 <li><a href="#inc23">23: Timesync receive</a></li>
+<li><a href="#inc24">24: Kicked</a></li>
+<li><a href="#inc25">25: Map reorder</a></li>
 <li><a href="#inc26">26: Mode change</a></li>
 <li><a href="#inc27">27: Change WL (Rounds)</a></li>
 <li><a href="#inc29">29: Map switch</a></li>
+<li><a href="#inc28">28: Map delete</a></li>
+<li><a href="#inc30">30: Typing (unused)</a></li>
+<li><a href="#inc31">29: Admin Inputs</a></li>
 <li><a href="#inc33">33: Map Suggest</a></li>
 <li><a href="#inc34">34: Map Suggest Client</a></li>
+<li><a href="#inc35">35: Change mode</a></li>
+<li><a href="#inc36">36: Balance</a></li>
+<li><a>38: Unused</a></li>
+<li><a href="#inc39">39: Team settings change</a></li>
 <li><a href="#inc40">40: Save Replay</a></li>
+<li><a href="#inc41">41: Host Change</a></li>
 <li><a href="#inc42">42: Friend Req</a></li>
 <li><a href="#inc43">43: Game starting Countdown</a></li>
 <li><a href="#inc44">44: Abort Countdown</a></li>
 <li><a href="#inc45">45: Player Leveled Up</a></li>
 <li><a href="#inc46">46: Local Gained XP</a></li>
+<li><a href="#inc47">47: Local Revert</a></li>
+<li><a href="#inc48">48: Recv ingame</a></li>
 <li><a href="#inc49">49: Created Room Share Link</a></li>
 <li><a href="#inc52">52: Tabbed</a></li>
 <li><a href="#inc58">58: Room Name Update</a></li>
@@ -336,13 +348,30 @@ _____
     </ol>
   </p></li>
   <li id="inc23"><p>
-    21: Timesync Receive
+    23: Timesync Receive
     <br>Response to the timesync request (outgoing packet with id 18)
     <br>Example: <code>424[18,{"jsonrpc":"2.0","id":25,"method":"timesync"}]</code>
-		<br>If i am not mistaken the number that comes after 42 is the acknowledgment id
     <br>Items:
     <ol type=1>
       <li>"id": the id that was sent in the request.</li>
+    </ol>
+  </p></li>
+  <li id="inc24"><p>
+    24: Kicked
+    <br>Example: <code>424[24, ?, true]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Unused.</li>
+      <li>true: kicked, false: banned.</li>
+    </ol>
+  </p></li>
+  <li id="inc25"><p>
+    24: Map reorder
+    <br>Example: <code>424[25, ?, ?]</code>
+    <br>Items:
+    <ol type=1>
+      <li>?</li>
+      <li>?</li>
     </ol>
   </p></li>
   <li id="inc26"><p>
@@ -371,6 +400,14 @@ _____
       <li>The new amount of rounds. (WIN/LOSE) </li>
     </ol>
   </p></li>
+  <li id="inc28"><p>
+    28: Map removed
+    <br>Example: <code>42[28, 2]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Map id.</li>
+    </ol>
+  </p></li>
   <li id="inc29"><p>
     29: Map switch
     <br>Example: <code>42[29,"ILAMJAhBFBjBzCTlMiAJgNQEYFsCsAFtgOqYDWIhAjLAEyYCeAkgOICcArgFrQr8gACgHpRwgBwpEAWQFyQAXiA"]</code>
@@ -378,6 +415,22 @@ _____
     <ol type=1>
       <li>An encoded string containing the map. This format will likely be demystified in another file soon.</li>
     </ol>
+  </p></li>
+  <li id="inc30"><p>
+    30: Typing (Unused)
+    <br>Example: <code>42[29, ?]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Probably a true if the player is typing or false otherwise.</li>
+    </ol>
+  </p></li>
+  <li id="inc31"><p>
+    31: Admin Inputs
+    <br>Example: <code>42[31, {f: ?, a: ?}]</code>
+  </p></li>
+  <li id="inc32"><p>
+    32: Afk warn
+    <br>Example: <code>42[32]</code>
   </p></li>
   <li id="inc33"><p>
     33: Map Suggest
@@ -400,6 +453,28 @@ _____
       <li>Player ID of player who suggested the map</li>
     </ol>
   </p></li>
+  <li id="inc35"><p>
+    35: Change mode
+    <br>Example: <code>42[35, "ard"]</code>
+  </p></li>
+  <li id="inc36"><p>
+    36: Balance
+    <br>Changes the player buff/nerf
+    <br>Example: <code>42[36, 1, 100]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Player ID</li>
+      <li>Balance: -100 to 100</li>
+    </ol>
+  </p></li>
+  <li id="inc39"><p>
+    39: Team settings change
+    <br>Example: <code>42[36, true]</code>
+    <br>Items:
+    <ol type=1>
+      <li>true | false
+    </ol>
+  </p></li>
   <li id="inc40"><p>
     40: Save Replay
     <br>Example: <code>42[40,1]</code>
@@ -407,6 +482,10 @@ _____
     <ol type=1>
       <li>The id of a player that tried to save replay</li>
     </ol>
+  </p></li>
+  <li id="inc41"><p>
+    41: Host Change
+    <br>Example: <code>42[41, {oldHost: 1 newHost: 2}]</code>
   </p></li>
   <li id="inc42"><p>
     42: Friend Req
@@ -442,7 +521,42 @@ _____
   </p></li>
   <li id="inc46"><p>
     46: Local Gained XP
-    <br>Example: <code>42[46,{"newXP":300}]</code>
+    <br>Example: <code>42[46, {"newXP":300}]</code>
+    <br>Items:
+    <ol type=1>
+      <li>An object:
+      <ul>
+        <li>"newXP": Your new XP amount.</li>
+        <li>"newLevel" (only if you just leveled up): Your new level.</li>
+        <li>"newToken" (only if you just leveled up): The new token to use when preforming operations. Unknown if the old token stops functioning.</li>
+      </ul>
+    </ol>
+  </p></li>
+  <li id="inc47"><p>
+    47: Local Revert
+  </p></li>
+  <li id="inc48"><p>
+    48: Recv ingame
+    <br>Example: <code>42[48, {
+      "state": "jWcWeG1aSGBGMGWgcgPwGwi+NuQZo...",
+      "stateID": 85,
+      "fc": 205,
+      "inputs": [],
+      "admin": [],
+      "gs": {
+          "map": "ILAMJAhBFBjBzCTlMiAWga3QOwHIC2sAT...",
+          "gt": 2,
+          "wl": 3,
+          "q": false,
+          "tl": false,
+          "tea": false,
+          "ga": "b",
+          "mo": "b",
+          "bal": []
+      },
+      "random": [54, 23, 13, 44...]
+    }]
+    </code>
     <br>Items:
     <ol type=1>
       <li>An object:

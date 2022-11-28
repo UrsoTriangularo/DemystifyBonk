@@ -34,7 +34,11 @@ Packets that break this rule:
 <li><a href="#inc7">7: Inputs</a></li>
 <li><a href="#inc8">8: Ready Change</a></li>
 <li><a href="#inc9">9: Ready Reset</a></li>
+<li><a href="#inc10">10: Player Muted</a></li>
+<li><a href="#inc11">11: Player Unmuted</a></li>
+<li><a href="#inc11">12: Name Change</a></li>
 <li><a href="#inc13">13: Game End</a></li>
+<li><a>14: Unused</a></li>
 <li><a href="#inc15">15: Game Start</a></li>
 <li><a href="#inc16">16: Error</a></li>
 <li><a href="#inc18">18: Team Change</a></li>
@@ -219,8 +223,35 @@ _____
   </p></li>
   <li id="inc9"><p>
     9: Ready Reset
-    <br>Resets the ready state of all players in the room
+    <br>Resets the ready state of all players in the room.
 		<br>Example: <code>42[8,1,true]</code>
+  </p></li>
+  <li id="inc10"><p>
+    10: Player Muted
+    <br>Example: <code>42[10, 1, ?]</code>
+    <br>Items:
+    <ol type=1>
+      <li>The ID of the person that was muted.</li>
+      <li>Unused.</li>
+    </ol>
+  </p></li>
+	<li id="inc11"><p>
+    11: Player Unmuted
+    <br>Example: <code>42[11, 1, ?]</code>
+    <br>Items:
+    <ol type=1>
+      <li>The ID of the person that was unmuted.</li>
+      <li>Unused.</li>
+    </ol>
+  </p></li>
+	<li id="inc12"><p>
+    12: Name Change
+    <br>Example: <code>42[12, 1, "name"]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Player ID.</li>
+      <li>New Name.</li>
+    </ol>
   </p></li>
   <li id="inc13"><p>
     13: Game End

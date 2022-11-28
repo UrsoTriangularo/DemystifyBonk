@@ -41,10 +41,12 @@ Packets that break this rule:
 <li><a>14: Unused</a></li>
 <li><a href="#inc15">15: Game Start</a></li>
 <li><a href="#inc16">16: Error</a></li>
+<li><a>17: Unused</a></li>
 <li><a href="#inc18">18: Team Change</a></li>
 <li><a href="#inc19">19: Teamlock toggle</a></li>
 <li><a href="#inc20">20: Chat Message</a></li>
 <li><a href="#inc21">21: Initial data</a></li>
+<li><a href="#inc23">23: Timesync receive</a></li>
 <li><a href="#inc26">26: Mode change</a></li>
 <li><a href="#inc27">27: Change WL (Rounds)</a></li>
 <li><a href="#inc29">29: Map switch</a></li>
@@ -331,6 +333,16 @@ _____
     <br>Items:
     <ol type=1>
       <li>An object with map + other game-related data.</li>
+    </ol>
+  </p></li>
+  <li id="inc23"><p>
+    21: Timesync Receive
+    <br>Response to the timesync request (outgoing packet with id 18)
+    <br>Example: <code>424[18,{"jsonrpc":"2.0","id":25,"method":"timesync"}]</code>
+		<br>If i am not mistaken the number that comes after 42 is the acknowledgment id
+    <br>Items:
+    <ol type=1>
+      <li>"id": the id that was sent in the request.</li>
     </ol>
   </p></li>
   <li id="inc26"><p>

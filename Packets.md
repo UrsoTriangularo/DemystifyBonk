@@ -119,9 +119,9 @@ _____
     <br>Example: <code>42[2,"1gozW6_jPwAdO_mJARyd",1,null]</code>
     <br>Items:
     <ol type=1>
-      <li>Not used in the game's code</li>
-      <li>ID probably? always 1</li>
-      <li>null if custom room or map array with the format [{id: 0, s: encoded_map_data, v: map_version}, {id: 1...}]</li>
+      <li>Not used in the game's code.</li>
+      <li>ID probably? always 1.</li>
+      <li>map array with the format [{id: 0, s: encoded_map_data, v: map_version}, {id: 1...}] if the room mode is quickplay or null if custom.</li>
     </ol>
   </p></li>
   <li id="inc3"><p>

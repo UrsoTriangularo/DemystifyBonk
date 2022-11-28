@@ -33,6 +33,7 @@ Packets that break this rule:
 <li><a href="#inc6">6: Host leave</a></li>
 <li><a href="#inc7">7: Inputs</a></li>
 <li><a href="#inc8">8: Ready Change</a></li>
+<li><a href="#inc9">9: Ready Reset</a></li>
 <li><a href="#inc13">13: Game End</a></li>
 <li><a href="#inc15">15: Game Start</a></li>
 <li><a href="#inc16">16: Error</a></li>
@@ -215,6 +216,11 @@ _____
       <li>The ID of the person that changed their [READY] status</li>
       <li><code>true</code> if the player is ready (has a checkmark), otherwise <code>false</code>.</li>
     </ol>
+  </p></li>
+  <li id="inc9"><p>
+    9: Ready Reset
+    <br>Resets the ready state of all players in the room
+		<br>Example: <code>42[8,1,true]</code>
   </p></li>
   <li id="inc13"><p>
     13: Game End

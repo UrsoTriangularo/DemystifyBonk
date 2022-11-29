@@ -71,7 +71,11 @@ Packets that break this rule:
 <li><a href="#inc47">47: Local Revert</a></li>
 <li><a href="#inc48">48: Recv ingame</a></li>
 <li><a href="#inc49">49: Created Room Share Link</a></li>
+<li><a href="#inc50">50: Map Voted</a></li>
+<li><a href="#inc51">51: On More Quick Maps</a></li>
 <li><a href="#inc52">52: Tabbed</a></li>
+<li><a href="#inc53">53: Desync Req</a></li>
+<li><a href="#inc54">54: Desync Res</a></li>
 <li><a href="#inc58">58: Room Name Update</a></li>
 <li><a href="#inc59">59: Room Password Update</a></li> 
 </ul>
@@ -557,15 +561,6 @@ _____
       "random": [54, 23, 13, 44...]
     }]
     </code>
-    <br>Items:
-    <ol type=1>
-      <li>An object:
-      <ul>
-        <li>"newXP": Your new XP amount.</li>
-        <li>"newLevel" (only if you just leveled up): Your new level.</li>
-        <li>"newToken" (only if you just leveled up): The new token to use when preforming operations. Unknown if the old token stops functioning.</li>
-      </ul>
-    </ol>
   </p></li>
   <li id="inc49"><p>
     49: created Room
@@ -576,6 +571,26 @@ _____
       <li>The room bypass, if any. Otherwise, this is "".</li>
     </ol>
   </p></li>
+  <li id="inc50"><p>
+    50: Map Voted
+    <br>Example: <code>42[50, 831011, true]</code>
+    <br>Items:
+    <ol type=1>
+      <li>The map db id.</li>
+      <li>
+        Whenever you already voted for this map, if it return false then a window is shown
+        at the end of the round for you to vote for the map.
+      </li>
+    </ol>
+  </p></li>
+  <li id="inc51"><p>
+    51: On more quick maps
+    <br>Example: <code>42[51, ?]</code>
+    <br>Items:
+    <ol type=1>
+      <li>Didnt test it, probably an array of maps like the <a href="#in2">Room Created packet</a></li>
+    </ol>
+  </p></li>
    <li id="inc52"><p>
     52: Tabbed
     <br>Also known as AFK Status
@@ -584,7 +599,20 @@ _____
     <ol type=1>
       <li>Player id of person who tabbed in/out</li>
       <li><code>false</code> if the player is now focused on the tab, otherwise <code>true</code>.</li>
-  </ol>
+    </ol>
+  </p></li>
+  </p></li>
+   <li id="inc53"><p>
+    53: Desync Req
+  </p></li>
+  </p></li>
+   <li id="inc54"><p>
+    54: Desync Res
+  </p></li>
+  </p></li>
+   <li id="inc57"><p>
+    57: Curate Result
+    <br>The result of the "/curate" command, regular players cant use it so i wont bother trying to document it
   </p></li>
   <li id="inc58"><p>
     58: Room Name Update 
@@ -594,6 +622,7 @@ _____
     <ol type=1>
       <li>new room name</li>
     </ol>
+  </p></li>
   </p></li>
    <li id="inc59"><p>
     59: Room Pass Update 
@@ -611,8 +640,23 @@ _____
 ## Outgoing
 
 <ul>
-  <li id="out3"><p>
-    3: Send Inputs 
+  <li id="out1"><p>
+    1: Ping response
+    <br>Examples:
+    <ul>
+      <li><code>42[1, {"id": 1]</code></li>
+    </ul>
+    <br>Items:
+    <ol type=1>
+      <li>An object:
+      <ul>
+        <li>"id": The id you got from the second item of the ping array</li>
+      </ul>
+      </li>
+    </ol>
+  </p></li>
+  <li id="out4"><p>
+    4: Send Inputs 
     <br>Examples:
     <ul>
       <li><code>42[4,{"i":38,"f":324,"c":45}]</code></li>
@@ -655,12 +699,16 @@ _____
       <li>'teamLock': whether to disable/enable team lock <code>true</code> to lock teams <code>false</code> false to have teams unlocked</li></a>
     </ol>
   </p></li>
+  <li id="out8"><p>
+    8: Silence player (unused)
+  </p></li>
   <li id="out9"><p>
-    9: Ban Player
-    <br>Example: <code>42[9,{"banshortid":6}]</code>
+    9: Ban Player / Kick player
+    <br>Example: <code>42[9,{"banshortid":6, "kickonly": true}]</code>
     <br>Items:
     <ol type=1>
       <li>'banshortid': The player's ID.</li></a>
+      <li>'kickonly': true|false.</li></a>
     </ol>
   </p></li>
   <li id="out10"><p>
@@ -708,7 +756,22 @@ _____
       <li>'avatar': Your skin data</li></a>
     </ol>
   </p></li>
-    <li id="out14"><p>
+  <li id="out13"><p>
+    13: Join Room
+    <br>Items:
+    <ol type=1>
+      <li>'jonID': Room id</li>
+      <li>'roomPassword': The room password</li></a>
+      <li>'dbid': 2</li></a>
+      <li>'version': Game version (currently 45)</li></a>
+      <li>'guest': Whether you are a quest</li></a>
+      <li>guest ? 'guestName': Your guest name</li></a>
+      <li>!guest ? 'token': Your login session token</li></a>
+      <li>'avatar': Your skin data</li></a>
+      <li>'extraParams': json obj</li></a>
+    </ol>
+  </p></li>
+  <li id="out14"><p>
     14: Return To Lobby
     <br>Exit out of the game to return to the lobby
     <br>Example: <code>42[14]</code>
@@ -720,6 +783,19 @@ _____
     <br>Items:
     <ol type=1>
       <li>"ready": <code>true</code> if you want to have be ready (have a checkmark), otherwise <code>false</code>.    </ol>
+  </p></li>
+  <li id="out17"><p>
+    16: All Ready Reset
+    <br>Disable everyone's ready
+    <br>Example: <code>42[17]</code>
+  </p></li>
+  <li id="out18"><p>
+    16: Send timesync request
+    <br>Example: <code>42503[18,{"jsonrpc":"2.0","id":503,"method":"timesync"}]</code>
+  </p></li>
+  <li id="out19"><p>
+    16: Send map reorder (unused)
+    <br>Example: <code>42[19, {"s": ?, "e": ?}]</code>
   </p></li>
   <li id="out20"><p>
     20: Send Mode

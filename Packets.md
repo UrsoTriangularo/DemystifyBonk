@@ -36,7 +36,7 @@ Packets that break this rule:
 <li><a href="#inc9">9: Ready Reset</a></li>
 <li><a href="#inc10">10: Player Muted</a></li>
 <li><a href="#inc11">11: Player Unmuted</a></li>
-<li><a href="#inc11">12: Name Change</a></li>
+<li><a href="#inc12">12: Name Change</a></li>
 <li><a href="#inc13">13: Game End</a></li>
 <li><a>14: Unused</a></li>
 <li><a href="#inc15">15: Game Start</a></li>
@@ -82,22 +82,33 @@ Packets that break this rule:
 
 ### Outgoing
 <ul>
-<li><a href="#out3">3: Send Inputs</a></li> 
+<li><a href="#out1">1: Ping response</a></li> 
+<li><a href="#out2">2: Test ping</a></li> 
+<li><a href="#out4">4: Send Inputs</a></li> 
 <li><a href="#out5">5: Trigger Start</a></li> 
 <li><a href="#out6">6: Change Own Team</a></li> 
 <li><a href="#out7">7: Team Lock</a></li> 
-<li><a href="#out9">9: Ban Player</a></li> 
+<li><a href="#out9">9: Ban / Kick player</a></li> 
 <li><a href="#out10">10: Chat Message</a></li>
 <li><a href="#out11">11: Inform In Lobby</a></li> 
 <li><a href="#out12">12: Create Room</a></li> 
+<li><a href="#out13">13: Join Room</a></li> 
 <li><a href="#out14">14: Return To Lobby</a></li> 
-<li><a href="#out16">16: Set Ready</a></li> 
+<li><a href="#out16">16: Set Ready</a></li>
+<li><a href="#out17">17: All Ready Reset</a></li>
+<li><a href="#out18">18: Send timesync request</a></li>
+<li><a href="#out19">19: Send map reorder (unused)</a></li> 
 <li><a href="#out20">20: Send Mode</a></li> 
 <li><a href="#out21">21: Send WL (Rounds)</a></li> 
+<li><a href="#out22">22: Send map delete (unused)</a></li> 
 <li><a href="#out23">23: Send Map Add</a></li> 
+<li><a href="#out24">23: Send Typing</a></li> 
+<li><a href="#out25">25: Send admin inputs</a></li> 
 <li><a href="#out26">26: Change Other Team</a></li> 
 <li><a href="#out27">27: Send Map Suggest</a></li> 
-<li><a href="#out29">29: Send Balance</a></li> 
+<li><a href="#out29">29: Send Balance</a></li>
+<li><a href="#out30">30: Send version check (unused)</a></li> 
+<li><a href="#out31">31: Send debug winner (unused)</a></li> 
 <li><a href="#out32">32: Send Team Settings Change</a></li> 
 <li><a href="#out33">33: Send Arm Record</a></li> 
 <li><a href="#out34">34: Send Host Change</a></li> 
@@ -105,20 +116,20 @@ Packets that break this rule:
 <li><a href="#out36">36: Send Start Countdown</a></li> 
 <li><a href="#out37">37: Send Abort Countdown</a></li> 
 <li><a href="#out38">38: Send Req XP</a></li> 
-<li><a href="#out39">39: Send Map Vote</a></li> 
+<li><a href="#out39">39: Send Map Vote</a></li>
+<li><a href="#out40">40: Inform ingame</a></li> 
+<li><a href="#out41">41: Get prevote</a></li> 
+<li><a href="#out42">42: Get more quickplay maps</a></li> 
+<li><a href="#out43">43: Update RC</a></li> 
 <li><a href="#out44">44: Tabbed</a></li> 
+<li><a href="#out45">45: Send desync test</a></li> 
+<li><a href="#out46">46: Send desync res</a></li> 
+<li><a href="#out47">47: Send round complete</a></li> 
+<li><a href="#out48">48: Send round complete</a></li> 
 <li><a href="#out50">50: Send No Host Swap</a></li> 
-</ul>
-	
-### Outgoing Debug
-*Possibly unused/Debug Outgoing Packets*
-<ul>
-<li><a href="#debugout3">3: Get Debug</a></li> 
-<li><a href="#debugout8">8: Silence Player</a></li> 
-<li><a href="#debugout30">30: Version Check</a></li> 
-<li><a href="#debugout31">31: Send Debug Winner</a></li> 
-<li><a href="#debugout45">45: Desync Test</a></li> 
-<li><a href="#debugout46">46: Send Desync Res</a></li> 
+<li><a href="#out51">51: Send Map Curate</a></li> 
+<li><a href="#out52">52: Send room name update</a></li> 
+<li><a href="#out53">53: Send room password update</a></li> 
 </ul>
 
 _____
@@ -422,10 +433,10 @@ _____
   </p></li>
   <li id="inc30"><p>
     30: Typing (Unused)
-    <br>Example: <code>42[29, ?]</code>
+    <br>Example: <code>42[30, 0]</code>
     <br>Items:
     <ol type=1>
-      <li>Probably a true if the player is typing or false otherwise.</li>
+      <li>Player id</li>
     </ol>
   </p></li>
   <li id="inc31"><p>
@@ -644,7 +655,7 @@ _____
     1: Ping response
     <br>Examples:
     <ul>
-      <li><code>42[1, {"id": 1]</code></li>
+      <li><code>42[1, {"id": 1}]</code></li>
     </ul>
     <br>Items:
     <ol type=1>
@@ -654,6 +665,16 @@ _____
       </ul>
       </li>
     </ol>
+  </p></li>
+  <li id="out2"><p>
+    2: Test ping
+    <br>Examples:
+    <ul>
+      <li><code>42[2]</code></li>
+    </ul>
+  </p></li>
+  <li id="out3"><p>
+    3: Get debug (unused)
   </p></li>
   <li id="out4"><p>
     4: Send Inputs 
@@ -785,7 +806,7 @@ _____
       <li>"ready": <code>true</code> if you want to have be ready (have a checkmark), otherwise <code>false</code>.    </ol>
   </p></li>
   <li id="out17"><p>
-    16: All Ready Reset
+    17: All Ready Reset
     <br>Disable everyone's ready
     <br>Example: <code>42[17]</code>
   </p></li>
@@ -824,6 +845,10 @@ _____
     <ol type=1>
       <li>"w": The amount of rounds</ol>
   </p></li>
+  <li id="out22"><p>
+    22: Send Map Delete (unused)
+    <br>Example: <code>42[21,{"d": ?}]	</code>
+  </p></li>
   <li id="out23"><p>
     23: Send Map Add
     <br>Change the current map
@@ -831,6 +856,14 @@ _____
     <br>Items:
     <ol type=1>
       <li>"m": The Map Data</ol>
+  </p></li>
+  <li id="out24"><p>
+    24: Send Typing
+    <br>Example: <code>42[24] </code>
+  </p></li>
+  <li id="out25"><p>
+    25: Send Admin Inputs
+    <br>Example: <code>42[25, ?] </code>
   </p></li>
   <li id="out26"><p>
     26: Change Other Team 
@@ -851,6 +884,15 @@ _____
       <li>'mapname': The Maps Author (Map Creator)</li></a>
     </ol>
   </p></li>
+  <li id="out28"><p>
+    28: Send Change Mode
+    <br>Change the lobby mode
+    <br>Example: <code>42[28, "arr"]</code>
+    <br>Items:
+    <ol type=1>
+      <li>The new mode</li></a>
+    </ol>
+  </p></li>
   <li id="out29"><p>
     29: Send Balance
     <br>Change a players nerf/buff
@@ -860,6 +902,14 @@ _____
       <li>'sid': The Players ID of who you are adding the balance to</li></a>
       <li>'bal': The balance amount</li></a>
     </ol>
+  </p></li>
+  <li id="out30"><p>
+    30: Send version check (unused)
+    <br>Example: <code>42[30]</code>
+  </p></li>
+  <li id="out31"><p>
+    30: Send debug winner (unused)
+    <br>Example: <code>42[31, {wid: 0}]</code>
   </p></li>
   <li id="out32"><p>
     32: Send Team Settings Change
@@ -873,7 +923,7 @@ _____
   <li id="out33"><p>
     33: Send Arm Record
     <br>Save a replay
-    <br>Example: <code42[33]</code>
+    <br>Example: <code>42[33]</code>
   </p></li>
   <li id="out34"><p>
     34: Send Host Change
@@ -911,12 +961,57 @@ _____
   </p></li>
   <li id="out39"><p>
     39: Send Map Vote
-    <br>send a friend request to someone
     <br>Example: <code>42[39,{"mapid":98062,"vote":1}]</code>
     <ol type=1>
       <li>"mapid": The Map ID you are voting</li>
       <li>"vote": The type of vote. 1 for thumbs up, 0 for thumbs down</li>
     </ol>
+  </p></li>
+  <li id="out40"><p>
+    40: Inform ingame
+    <br>Example:
+    <code>
+      [40, {
+        "sid": 2,
+        "allData": {
+            "state": "jWcWeG1aSG...",
+            "stateID": 7974,
+            "fc": 8094,
+            "inputs": [],
+            "admin": [],
+            "gs": {
+                "map": "ILAMJAhBFBjBzCTlMsSApARgNQGIYDy0....",
+                "gt": 2,
+                "wl": 3,
+                "q": false,
+                "tl": false,
+                "tea": false,
+                "ga": "b",
+                "mo": "b",
+                "bal": []
+            },
+            "random": [13, 15, 42...]
+          }
+        }
+      ] 
+    </code>
+    <ol type=1>
+      <li>"mapid": The Map ID you are voting</li>
+      <li>"vote": The type of vote. 1 for thumbs up, 0 for thumbs down</li>
+    </ol>
+  </p></li>
+  <li id="out41"><p>
+    41: Get Prevote
+    <br>Example: <code>42[41, {"mapid": 3}]</code>
+  </p></li>
+  <li id="out42"><p>
+    42: Get more quickplay maps
+    <br>Example: <code>42[42, {"sf": ?}]</code>
+  </p></li>
+  <li id="out43"><p>
+    43: Update RC
+    <br>idk what it does
+    <br>Example: <code>42[43, {"rc": 10}]</code>
   </p></li>
   <li id="out44"><p>
     44: tabbed
@@ -926,54 +1021,38 @@ _____
       <li>"out": <code>true</code> to set your status as focused on the tab, otherwise <code>false</code>.</li>
     </ol>
   </p></li>
+  <li id="out45"><p>
+    45: Send desync test
+  </p></li>
+  <li id="out46"><p>
+    46: Send desync res
+  </p></li>
+  <li id="out47"><p>
+    47: Send round complete
+    <br>Makes it so that when the host leaves the room, the room ends.
+    <br>Example: <code>42[47, {"mo": ?, "mid": ?}]</code>
+  </p></li>
+  <li id="out48"><p>
+    48: Send round complete
+    <br>Makes it so that when the host leaves the room, the room ends.
+    <br>Example: <code>42[47, {"mo": ?, "mid": ?}]</code>
+  </p></li>
   <li id="out50"><p>
     50: No Host Swap
     <br>Makes it so that when the host leaves the room, the room ends.
     <br>Example: <code>42[50]</code>
   </p></li>
+  <li id="out51"><p>
+    50: Send map curate
+    <br>Needs privileges to use it
+    <br>Example: <code>42[50, {"mapid": 5, "dbv": 2, "comment": "some comment"}]</code>
+  </p></li>
+  <li id="out52"><p>
+    52: Send room name update
+    <br>Example: <code>42[52, {"newName": "test"}]</code>
+  </p></li>
+  <li id="out53"><p>
+    53: Send room password update
+    <br>Example: <code>42[53, {"newPass": "test"}]</code>
+  </p></li>
   <br><br>
-  <i>Possibly unused/Debug Outgoing Packets</i>
-  <li id="debugout3"><p>
-    3: Get Debug
-    <br>Example: <code>42[3]</code>
-  </p></li>
-  <li id="debugout8"><p>
-    8: Silence Player
-    <br>Example: <code>NO EXAMPLE</code>
-    <ol type=1>
-      <li>"muteID": The Player you are muting?</li>
-      <li>"muteType": ?</li>
-      <li>"action":?</li>
-    </ol>
-  </p></li>
-  <li id="debugout30"><p>
-    30: Version Check
-    <br>Example: <code>42[30]</code>
-  </p></li>
-  <li id="debugout31"><p>
-    31: Send Debug Winner
-    <br>Example: <code>42[31,{"wid":0}]</code>
-    <ol type=1>
-      <li>"wid": Winner Id</li>
-    </ol>
-  </p></li>
-  <li id="debugout45"><p>
-    45: Desync Test
-    <br>Test whether a player is desynced?
-    <br>Example: <code>NO EXAMPLE</code>
-    <ol type=1>
-      <li>"id": The players id to test whether they are desynced>?</li>
-      <li>"a": ?</li>
-    </ol>
-  </p></li>
-  <li id="debugout46"><p>
-    46: Send Desync Res
-    <br>Example: <code>NO EXAMPLE</code>
-    <ol type=1>
-      <li>"rid": ?</li>
-      <li>"sid": Player Id</li>
-      <li>"s": ?</li>
-      <li>"a": ?</li>
-    </ol>
-  </p></li>
- </ul>
